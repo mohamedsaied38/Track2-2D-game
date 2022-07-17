@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,9 +9,10 @@ public class PlayerMovement : MonoBehaviour
     public float speed;
 
     public GameObject gameWonPanel;
+    public GameObject gameLoss;
     public GameObject gamePausePanel;
 
-    public bool gameWon;
+    public bool isGameOver;
 
 
     // Start is called before the first frame update
@@ -18,13 +20,14 @@ public class PlayerMovement : MonoBehaviour
     {
         gameWonPanel.SetActive(false);
         gamePausePanel.SetActive(false);
-        gameWon = false;
+        gameLoss.SetActive(false);
+        isGameOver = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gameWon)
+        if (isGameOver)
         {
             return;
         }
@@ -66,7 +69,21 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Level Complete");
             gameWonPanel.SetActive(true);
-            gameWon = true;
+            isGameOver = true;
         }
+        if (collision.CompareTag("Enemy"))
+        {
+            Debug.Log("You loss");
+            gameLoss.SetActive(true);
+            isGameOver = true;
+        }
+    }
+
+    
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("Button Clicked..");
     }
 }
