@@ -7,16 +7,28 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rigidbody2d;
     public float speed;
 
+    public GameObject gameWonPanel;
+    public GameObject gamePausePanel;
+
+    public bool gameWon;
+
 
     // Start is called before the first frame update
     void Start()
     {
-       
+        gameWonPanel.SetActive(false);
+        gamePausePanel.SetActive(false);
+        gameWon = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gameWon)
+        {
+            return;
+        }
+
         if (Input.GetAxis("Horizontal") > 0)
         {
             rigidbody2d.velocity = new Vector2(speed, 0);
@@ -40,6 +52,11 @@ public class PlayerMovement : MonoBehaviour
         {
             rigidbody2d.velocity = Vector2.zero;
         }
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            gamePausePanel.SetActive(true);
+        }
     }
 
 
@@ -48,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
         if (collision.CompareTag("Door"))
         {
             Debug.Log("Level Complete");
+            gameWonPanel.SetActive(true);
+            gameWon = true;
         }
     }
 }
